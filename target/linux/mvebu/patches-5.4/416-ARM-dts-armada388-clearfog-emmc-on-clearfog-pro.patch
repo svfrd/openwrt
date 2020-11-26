@@ -1,0 +1,12 @@
+Index: linux-4.19.98/arch/arm/boot/dts/armada-388-clearfog-pro.dts
+===================================================================
+--- linux-4.19.98.orig/arch/arm/boot/dts/armada-388-clearfog-pro.dts
++++ linux-4.19.98/arch/arm/boot/dts/armada-388-clearfog-pro.dts
+@@ -5,6 +5,7 @@
+  *  Copyright (C) 2015 Russell King
+  */
+ #include "armada-388-clearfog.dts"
++#include "armada-38x-solidrun-microsom-emmc.dtsi"
+ 
+ / {
+ 	model = "SolidRun Clearfog Pro A1";
