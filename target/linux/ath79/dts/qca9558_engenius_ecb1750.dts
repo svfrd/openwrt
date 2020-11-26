@@ -36,11 +36,6 @@
 			gpios = <&gpio 23 GPIO_ACTIVE_LOW>;
 			linux,default-trigger = "phy0tpt";
 		};
-
-		lan {
-			label = "blue:lan";
-			gpios = <&gpio 12 GPIO_ACTIVE_LOW>;
-		};
 	};
 
 	keys {
