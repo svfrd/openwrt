@@ -128,15 +128,13 @@
 &eth0 {
 	status = "okay";
 
-	pll-data = <0x9a000000 0x80000101 0x80001313>;
+	pll-data = <0x82000000 0x80000101 0x80001313>;
 
 	phy-handle = <&phy5>;
-	phy-mode = "rgmii";
+	phy-mode = "rgmii-id";
 
 	gmac-config {
 		device = <&gmac>;
-		rgmii-gmac0 = <1>;
-		rxd-delay = <3>;
-		rxdv-delay = <3>;
+		rgmii-enabled = <1>;
 	};
 };
