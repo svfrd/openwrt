@@ -64,12 +64,16 @@
 
 	status = "okay";
 
+	gmac0: mac@0 {
+		status = "disabled";
+	};
+
 	gmac1: mac@1 {
 		compatible = "mediatek,eth-mac";
 		reg = <1>;
 		phy-mode = "2500base-x";
 
-		phy-handle = <&phy0>;
+		phy-handle = <&phy5>;
 
 		nvmem-cells = <&macaddr_mrd_1fff8 0>;
 		nvmem-cell-names = "mac-address";
@@ -81,9 +85,17 @@
 	reset-delay-us = <1500000>;
 	reset-post-delay-us = <1000000>;
 
-	phy0: ethernet-phy@5 {
+	int_gbe_phy: ethernet-phy@0 {
+		status = "disabled";
+	};
+
+	phy5: ethernet-phy@5 {
 		reg = <5>;
-		compatible = "ethernet-phy-ieee802.3-c45";
+		// compatible = "ethernet-phy-id67c9.de10", "ethernet-phy-ieee802.3-c45";
+		compatible = "ethernet-phy-id67c9.de10";
+
+		// eee-broken-100tx;
+		// eee-broken-1000t;
 
 		leds {
 			#address-cells = <1>;
