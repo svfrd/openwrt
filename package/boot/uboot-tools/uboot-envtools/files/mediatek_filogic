@@ -157,6 +157,9 @@ zyxel,ex5601-t0)
 zyxel,ex5700-telenor)
 	ubootenv_add_uci_config "/dev/ubootenv" "0x0" "0x4000" "0x4000" "1"
 	;;
+zyxel,nwa50ax-pro-stock)
+	ubootenv_add_uci_config "/dev/mtd1" "0x0" "0x20000" "0x20000"
+	;;
 esac
 
 config_load ubootenv

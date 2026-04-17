@@ -3272,12 +3272,13 @@ define Device/zyxel_ex5700-telenor
 endef
 TARGET_DEVICES += zyxel_ex5700-telenor
 
-define Device/zyxel_nwa50ax-pro
+define Device/zyxel_nwa50ax-pro-stock
   DEVICE_VENDOR := Zyxel
   DEVICE_MODEL := NWA50AX Pro
   DEVICE_ALT0_VENDOR := Zyxel
   DEVICE_ALT0_MODEL := NWA90AX Pro
-  DEVICE_DTS := mt7981b-zyxel-nwa50ax-pro
+  DEVICE_VARIANT := (stock layout)
+  DEVICE_DTS := mt7981b-zyxel-nwa50ax-pro-stock
   DEVICE_DTS_DIR := ../dts
   DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware zyxel-bootconfig
   DEVICE_DTS_LOADADDR := 0x44000000
@@ -3290,4 +3291,38 @@ define Device/zyxel_nwa50ax-pro
   IMAGE/factory.bin := append-ubi | check-size $$$$(IMAGE_SIZE) | zyxel-nwa-fit-filogic
   IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
 endef
-TARGET_DEVICES += zyxel_nwa50ax-pro
+TARGET_DEVICES += zyxel_nwa50ax-pro-stock
+
+define Device/zyxel_nwa50ax-pro-ubootmod
+  DEVICE_VENDOR := Zyxel
+  DEVICE_MODEL := NWA50AX Pro
+  DEVICE_ALT0_VENDOR := Zyxel
+  DEVICE_ALT0_MODEL := NWA90AX Pro
+  DEVICE_VARIANT := (OpenWrt U-Boot layout)
+  DEVICE_DTS := mt7981b-zyxel-nwa50ax-pro-ubootmod
+  DEVICE_DTS_DIR := ../dts
+  DEVICE_PACKAGES := kmod-mt7915e kmod-mt7981-firmware mt7981-wo-firmware
+  # XXX: needs to be checked
+  DEVICE_DTS_LOADADDR := 0x44000000
+  #SUPPORTED_DEVICES += mediatek,mt7981-spim-snand-rfb
+  UBINIZE_OPTS := -E 5
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  KERNEL_IN_UBI := 1
+  UBOOTENV_IN_UBI := 1
+  IMAGES := sysupgrade.itb
+  KERNEL := kernel-bin | gzip
+  KERNEL_INITRAMFS_SUFFIX := -recovery.itb
+  KERNEL_INITRAMFS := kernel-bin | lzma | \
+	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb with-initrd | pad-to 64k
+  IMAGE/sysupgrade.itb := append-kernel | \
+	fit gzip $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb external-static-with-rootfs | append-metadata
+  ARTIFACTS := preloader.bin bl31-uboot.fip
+  ARTIFACT/preloader.bin := mt7981-bl2 spim-nand-ddr4
+  ARTIFACT/bl31-uboot.fip := mt7981-bl31-uboot zyxel-nwa50ax-pro
+#ifneq ($(CONFIG_TARGET_ROOTFS_INITRAMFS),)
+#  ARTIFACTS += initramfs-factory.ubi
+#  ARTIFACT/initramfs-factory.ubi := append-image-stage initramfs-recovery.itb | ubinize-kernel
+#endif
+endef
+TARGET_DEVICES += zyxel_nwa50ax-pro-ubootmod
