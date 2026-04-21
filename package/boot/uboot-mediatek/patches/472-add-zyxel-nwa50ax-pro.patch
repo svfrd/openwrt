@@ -1,6 +1,6 @@
 --- /dev/null
 +++ b/arch/arm/dts/mt7981_zyxel_nwa50ax-pro.dts
-@@ -0,0 +1,207 @@
+@@ -0,0 +1,239 @@
 +/dts-v1/;
 +#include "mt7981.dtsi"
 +#include <dt-bindings/gpio/gpio.h>
@@ -10,7 +10,7 @@
 +	#address-cells = <1>;
 +	#size-cells = <1>;
 +	model = "Zyxel NWA50AX PRO";
-+	compatible = "mediatek,mt7981", "mediatek,mt7981-rfb";
++	compatible = "zyxel,nwa50ax-pro", "mediatek,mt7981";
 +
 +	chosen {
 +		stdout-path = &uart0;
@@ -53,22 +53,54 @@
 +			default-state = "off";
 +		};
 +	};
++
++	gpio-export {
++		compatible = "gpio-export";
++
++		rst_mb {
++			gpio-export,name = "rst_mb";
++			gpio-export,output = <1>;
++			gpios = <&pio 9 GPIO_ACTIVE_HIGH>;
++		};
++	};
 +};
 +
 +&eth {
 +	status = "okay";
-+	mediatek,gmac-id = <0>;
-+	mediatek,sgmiisys = <&sgmiisys0>;
++	reg = <0x15100000 0x80000>; 
++	mediatek,gmac-id = <1>;
++	mediatek,ethsys = <&ethsys>;
++   mediatek,infracfg = <&topmisc>;
++	mediatek,sgmiisys = <&sgmiisys1>;
 +	phy-mode = "sgmii";
 +	phy-handle = <&phy5>;
 +
-+	phy5: eth-phy@5 {
-+		compatible = "ethernet-phy-id67c9.de10";
-+		reg = <5>;
-+		reset-gpios = <&pio 12 GPIO_ACTIVE_LOW>;
-+		reset-assert-us = <600>;
-+		reset-deassert-us = <20000>;
++	fixed-link {
++		speed = <2500>;
++		full-duplex;
 +	};
++
++	mdio {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		phy5: ethernet-phy@5 {
++			compatible = "ethernet-phy-id67c9.de10", "ethernet-phy-ieee802.3-c45";
++			reg = <5>;
++			reset-gpios = <&pio 12 GPIO_ACTIVE_LOW>;
++			reset-assert-us = <600>;
++			reset-deassert-us = <20000>;
++			phy-mode = "sgmii";
++		};
++	};
++};
++
++&ethsys {
++	compatible = "mediatek,mt7981-ethsys", "syscon";
++	reg = <0x15000000 0x1000>;
++	clock-parent = <&topckgen>;
++	#clock-cells = <1>;
++	#reset-cells = <1>;
 +};
 +
 +&pio {
@@ -195,14 +227,14 @@
 +};
 +
 +&uart0 {
-+   mediatek,force-highspeed;
++	mediatek,force-highspeed;
 +	status = "okay";
 +};
 +
 +&pwm {
-+   pinctrl-names = "default";
-+   pinctrl-0 = <&two_pwm_pins>;
-+   status = "okay";
++	pinctrl-names = "default";
++	pinctrl-0 = <&two_pwm_pins>;
++	status = "okay";
 +};
 +
 +&watchdog {
@@ -210,7 +242,7 @@
 +};
 --- /dev/null
 +++ b/configs/mt7981_zyxel_nwa50ax-pro_defconfig
-@@ -0,0 +1,110 @@
+@@ -0,0 +1,125 @@
 +CONFIG_ARM=y
 +CONFIG_SYS_HAS_NONCACHED_MEMORY=y
 +CONFIG_POSITION_INDEPENDENT=y
@@ -231,9 +263,11 @@
 +CONFIG_AUTOBOOT_KEYED=y
 +CONFIG_AUTOBOOT_MENU_SHOW=y
 +CONFIG_DEFAULT_FDT_FILE="mediatek/mt7981_zyxel_nwa50ax-pro.dtb"
-+CONFIG_LOGLEVEL=7
-+CONFIG_PRE_CONSOLE_BUFFER=y
 +CONFIG_LOG=y
++CONFIG_LOG_MAX_LEVEL=8
++CONFIG_LOG_DEFAULT_LEVEL=8
++CONFIG_LOGF_LINE=y
++CONFIG_PRE_CONSOLE_BUFFER=y
 +# CONFIG_BOARD_INIT is not set
 +CONFIG_BOARD_LATE_INIT=y
 +CONFIG_HUSH_PARSER=y
@@ -267,6 +301,8 @@
 +CONFIG_CMD_SMC=y
 +CONFIG_CMD_UBI=y
 +CONFIG_CMD_UBI_RENAME=y
++CONFIG_CMD_MDIO=y
++CONFIG_CMD_MII=y
 +CONFIG_OF_EMBED=y
 +CONFIG_ENV_OVERWRITE=y
 +CONFIG_ENV_IS_IN_UBI=y
@@ -299,9 +335,13 @@
 +CONFIG_DM_MTD=y
 +CONFIG_MTD_SPI_NAND=y
 +CONFIG_MTD_UBI_FASTMAP=y
-+CONFIG_PHY_FIXED=y
++CONFIG_DM_ETH_PHY=y
++CONFIG_DM_MDIO=y
++CONFIG_DM_GPIO=y
 +CONFIG_MEDIATEK_ETH=y
 +CONFIG_PHY=y
++CONFIG_PHY_ETHERNET_ID=y
++CONFIG_PHY_RESET_DELAY=500000
 +CONFIG_PINCTRL=y
 +CONFIG_PINCONF=y
 +CONFIG_PINCTRL_MT7981=y
@@ -321,6 +361,17 @@
 +CONFIG_NMBM_LOG_LEVEL_INFO=y
 +CONFIG_NMBM_MTD=y
 +CONFIG_NMBM=y
++CONFIG_MTK_ETH_SGMII=y
++CONFIG_PHY_GIGE=y
++CONFIG_CMD_PWM=y
++CONFIG_DM_PWM=y
++CONFIG_PWM_MTK=y
++CONFIG_DM_RESET=y
++CONFIG_RESET_MEDIATEK=y
++CONFIG_IRQ=y
++CONFIG_TIMER=y
++CONFIG_SYSRESET=y
++CONFIG_LOGF_LINE=y
 --- /dev/null
 +++ b/defenvs/zyxel_nwa50ax-pro_env
 @@ -0,0 +1,54 @@

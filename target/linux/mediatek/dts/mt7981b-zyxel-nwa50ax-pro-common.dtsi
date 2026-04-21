@@ -33,6 +33,34 @@
 		};
 	};
 
+	gpio-export {
+		compatible = "gpio-export";
+
+		hub_power {
+			gpio-export,name = "hub_power";
+			gpio-export,output = <1>;
+			gpios = <&pio 5 GPIO_ACTIVE_HIGH>;
+		};
+
+		5G_power {
+			gpio-export,name = "5G_power";
+			gpio-export,output = <1>;
+			gpios = <&pio 11 GPIO_ACTIVE_HIGH>;
+		};
+
+		5G_control {
+			gpio-export,name = "5G_control";
+			gpio-export,output = <1>;
+			gpios = <&pio 9 GPIO_ACTIVE_HIGH>;
+		};
+
+		5G_reset {
+			gpio-export,name = "5G_reset";
+			gpio-export,output = <0>;
+			gpios = <&pio 10 GPIO_ACTIVE_HIGH>;
+		};
+	};
+
 	leds {
 		compatible = "gpio-leds";
 
@@ -41,7 +69,7 @@
 			gpios = <&pio 4 GPIO_ACTIVE_HIGH>;
 		};
 
-		led-1 {
+		led_blue: led-1 {
 			label = "blue:system";
 			gpios = <&pio 6 GPIO_ACTIVE_HIGH>;
 		};
