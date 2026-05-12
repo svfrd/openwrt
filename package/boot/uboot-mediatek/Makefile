@@ -675,6 +675,18 @@ define U-Boot/mt7981_xiaomi_mi-router-wr30u
   DEPENDS:=+trusted-firmware-a-mt7981-spim-nand-ddr3
 endef
 
+define U-Boot/mt7981_zyxel_nwa50ax-pro
+  NAME:=Zyxel NWA50AX Pro
+  BUILD_SUBTARGET:=filogic
+  BUILD_DEVICES:=zyxel_nwa50ax-pro-ubootmod
+  UBOOT_CONFIG:=mt7981_zyxel_nwa50ax-pro
+  UBOOT_IMAGE:=u-boot.fip
+  BL2_BOOTDEV:=spim-nand
+  BL2_SOC:=mt7981
+  BL2_DDRTYPE:=ddr4
+  DEPENDS:=+trusted-firmware-a-mt7981-spim-nand-ddr4
+endef
+
 define U-Boot/mt7986_rfb
   NAME:=MT7986 Reference Board
   BUILD_SUBTARGET:=filogic
@@ -1227,6 +1239,7 @@ UBOOT_TARGETS := \
 	mt7981_snr_snr-cpe-ax2 \
 	mt7981_xiaomi_mi-router-ax3000t \
 	mt7981_xiaomi_mi-router-wr30u \
+	mt7981_zyxel_nwa50ax-pro \
 	mt7986_acer_predator-w6x \
 	mt7986_bananapi_bpi-r3-emmc \
 	mt7986_bananapi_bpi-r3-sdmmc \

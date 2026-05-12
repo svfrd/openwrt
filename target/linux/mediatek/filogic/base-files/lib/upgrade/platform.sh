@@ -125,6 +125,7 @@ platform_do_upgrade() {
 	xiaomi,redmi-router-ax6000-ubootmod|\
 	xiaomi,mi-router-wr30u-ubootmod|\
 	zyxel,ex5601-t0-ubootmod|\
+	zyxel,nwa50ax-pro-ubootmod|\
 	zyxel,wx5600-t0-ubootmod)
 		fit_do_upgrade "$1"
 		;;
