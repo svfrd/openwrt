@@ -1,0 +1,33 @@
+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+/*
+ * Copyright (C) 2021 MediaTek Inc.
+ * Author: Sven Friedmann <sf.github@okay.ms>
+ */
+
+/dts-v1/;
+#include "mt7981b-zyxel-nwa50ax-pro-common.dtsi"
+
+/ {
+	model = "Zyxel NWA50AX-PRO (OpenWrt U-Boot layout)";
+	compatible = "zyxel,nwa50ax-pro-ubootmod", "mediatek,mt7981b";
+};
+
+&chosen {
+	bootargs = "root=/dev/fit0 rootwait";
+	rootdisk = <&ubi_rootdisk>;
+};
+
+&partitions {
+
+	partition@580000 {
+		compatible = "linux,ubi";
+		label = "ubi";
+		reg = <0x580000 0xea00000>;
+
+		volumes {
+			ubi_rootdisk: ubi-volume-fit {
+				volname = "fit";
+			};
+		};
+	};
+};

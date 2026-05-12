@@ -160,10 +160,11 @@ xiaomi,redmi-router-ax6000-stock)
 	ubootenv_add_uci_sys_config "/dev/mtd2" "0x0" "0x10000" "0x20000"
 	;;
 zyxel,ex5601-t0|\
-zyxel,nwa50ax-pro)
+zyxel,nwa50ax-pro-stock)
 	ubootenv_add_mtd "u-boot-env" "0x0" "0x20000" "0x40000" "2"
 	;;
 zyxel,ex5601-t0-ubootmod|\
+zyxel,nwa50ax-pro-ubootmod|\
 zyxel,wx5600-t0-ubootmod)
 	ubootenv_add_ubi_default
 	ubootenv_add_sys_mtd "u-boot-env" "0x0" "0x20000" "0x40000" "2"

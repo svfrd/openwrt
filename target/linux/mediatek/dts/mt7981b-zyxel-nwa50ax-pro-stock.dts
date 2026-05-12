@@ -1,0 +1,51 @@
+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+/*
+ * Copyright (C) 2021 MediaTek Inc.
+ * Author: Sam.Shih <sam.shih@mediatek.com>
+ * Author: Sven Friedmann <sf.github@okay.ms>
+ */
+
+/dts-v1/;
+#include "mt7981b-zyxel-nwa50ax-pro-common.dtsi"
+
+/ {
+	model = "Zyxel NWA50AX-PRO (stock layout)";
+	compatible = "zyxel,nwa50ax-pro-stock", "mediatek,mt7981b";
+};
+
+&partitions {
+
+	partition@580000 {
+		label = "ubi";
+		reg = <0x580000 0x3200000>;
+	};
+
+	partition@3780000 {
+		label = "ubi_1";
+		reg = <0x3780000 0x3200000>;
+		read-only;
+	};
+
+	partition@6980000 {
+		label = "rootfs-data";
+		reg = <0x6980000 0x3c00000>;
+		read-only;
+	};
+
+	partition@a580000 {
+		label = "logs";
+		reg = <0xa580000 0x3a80000>;
+		read-only;
+	};
+
+	partition@e000000 {
+		label = "myzyxel";
+		reg = <0xe000000 0xf00000>;
+		read-only;
+	};
+
+	partition@ef00000 {
+		label = "bootconfig";
+		reg = <0xef00000 0x80000>;
+	};
+};
